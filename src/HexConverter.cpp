@@ -1,8 +1,7 @@
 #include <Arduino.h>
 #include "HexConverter.h"
 
-template <typename T>
-const T HexConverter::toInt(String hexString)
+const uint32_t HexConverter::toUInt(String hexString)
 {
     // Removes "0x" in the beginning of the string, if any
     if (hexString.startsWith("0x"))
@@ -31,7 +30,7 @@ const T HexConverter::toInt(String hexString)
         return 0;
     }
 
-    unsigned int returnValue{};
+    uint32_t returnValue{};
     for (size_t index = hexString.length() - 1, exponent = 0; index < hexString.length(); --index, ++exponent)
     {
         char c = hexString[index];
@@ -56,10 +55,10 @@ const T HexConverter::toInt(String hexString)
         returnValue += c * pow(16, exponent);
     }
 
-    return static_cast<T>(returnValue);
+    return returnValue;
 }
 
-const String HexConverter::toString(const unsigned int integer, unsigned int minimumLength)
+const String HexConverter::toString(const uint32_t integer, unsigned int minimumLength)
 {
     if (!minimumLength)
     {
@@ -71,10 +70,10 @@ const String HexConverter::toString(const unsigned int integer, unsigned int min
     bool hasReachedSignificantDigit = false;
     for (size_t exponent = MAXIMUM_STRING_LENGTH - 1, iteration = 0; exponent < MAXIMUM_STRING_LENGTH; --exponent, ++iteration)
     {
-        unsigned int filteredHexDigit;
+        uint32_t filteredHexDigit;
 
         // Example of what actually happens: 0xABCD & 0x0F00 == 0x0B00, similar thing to B10100110 & B11110000 == B10100000 ($data AND $filter == $filtered_data)
-        filteredHexDigit = integer & static_cast<unsigned int>((pow(16, exponent + 1) - 1) - (pow(16, exponent) - 1));
+        filteredHexDigit = integer & static_cast<uint32_t>((pow(16, exponent + 1) - 1) - (pow(16, exponent) - 1));
 
         // Assumes significant digit has been found when it reached the total number of digits specified by the function argument
         if (minimumLength >= MAXIMUM_STRING_LENGTH - iteration)
