@@ -15,13 +15,6 @@ void myAssert(bool toAssert)
 
 void setup()
 {
-    Serial.begin(115200);
-
-    Serial.print("-- HexConverter Function Library --");
-    Serial.println();
-
-    Serial.println();
-
     // Supports hex literal detection in the string
     const unsigned int integer1 = HexConverter::toUInt("0xFF");
     myAssert(integer1 == 255 && integer1 == 0xFF);
@@ -53,8 +46,6 @@ void setup()
     // There are functions that return unsigned integers in the form of short and char too
     const unsigned int integer8 = HexConverter::toUChar("0xAA");
     myAssert(integer8 == 170 && integer8 == 0xAA);
-
-    Serial.println();
 
     // Converts from integer to string too
     const String string1 = HexConverter::toString(3735928559);
